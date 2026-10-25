@@ -1,0 +1,2 @@
+accuracy,precision,recall,f1,roc_auc,n_zeroday_rows,detection_rate,false_alarm_rate,n_train_rows,n_test_rows,duration_quantum_features_train_s,duration_quantum_features_test_s,duration_total_s
+0.3625,1.0,0.019230769230769232,0.03773584905660377,0.6085164835164836,52,0.019230769230769232,0.0,150,80,4.8754799365997314,2.0793912410736084,7.821504354476929
