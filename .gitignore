@@ -1,0 +1,10 @@
+# datasets are downloaded separately (see data/README.md)
+data/*
+!data/README.md
+
+# Python / Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/

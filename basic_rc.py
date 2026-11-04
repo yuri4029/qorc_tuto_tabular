@@ -42,13 +42,19 @@ for t in range(len(train_in)):
 
 states_history = np.array(states_history)
 
+# Washout: the first states still remember the all-zero starting point rather than the
+# input, so they are dropped before training the readout.
+washout = 50
+states_fit, target_fit = states_history[washout:], train_target[washout:]
+
 # 5. TRAIN THE READOUT LAYER (The Camera)
 # We use standard Ridge Regression (a simple linear equation solver) 
 # to map the states_history directly to the train_target.
 # Notice: W_in and W_res are NEVER modified. We only compute W_out!
-reg = 1e-8  # Regularization constant to prevent overfitting
-W_out = np.dot(np.dot(train_target, states_history), 
-               np.linalg.inv(np.dot(states_history.T, states_history) + reg * np.eye(n_reservoir)))
+# W_out = y^T X (X^T X + reg*I)^-1, solved as a linear system instead of an explicit inverse.
+reg = 1e-6  # Ridge penalty: keeps W_out small and the solve well conditioned
+W_out = np.linalg.solve(states_fit.T @ states_fit + reg * np.eye(n_reservoir),
+                        states_fit.T @ target_fit).reshape(1, -1)
 
 # 6. TEST THE TRAINED AI ON UNSEEN DATA
 predictions = []
@@ -57,6 +63,9 @@ for t in range(len(test_in)):
     x = np.tanh(np.dot(W_in, u) + np.dot(W_res, x)) # Process through the reservoir
     y_pred = np.dot(W_out, x)                       # The trained readout makes its guess
     predictions.append(y_pred.flatten()[0])
+
+rmse = np.sqrt(np.mean((np.array(predictions) - test_target) ** 2))
+print(f"one-step-ahead test RMSE: {rmse:.2e}")
 
 # 7. VISUALIZE RESULTS
 plt.figure(figsize=(10, 4))

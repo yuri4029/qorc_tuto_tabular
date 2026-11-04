@@ -23,6 +23,10 @@ Here `U[S,T]` is an `n × n` submatrix: rows of `U` are selected according to th
 
 Computing permanents becomes difficult as photon number grows. This is one reason Boson Sampling is studied as a task that may be hard to simulate classically.
 
+## Random unitaries
+
+`pcvl.Matrix.random_unitary(m)` draws a **Haar-random** unitary: the uniform distribution over all `m × m` unitaries. A standard way to draw one is to fill an `m × m` matrix with complex Gaussian entries (real and imaginary parts drawn independently from a normal distribution), orthonormalise it with a QR decomposition, and fix the phases of the diagonal of `R`. Boson Sampling hardness arguments assume such random unitaries; the QORC tutorial (`blog.ipynb`) uses one as its fixed reservoir.
+
 ## Building a unitary from MZIs
 
 A Mach–Zehnder interferometer (MZI) is a two-mode building block, usually made from two beam splitters and phase shifters. In Perceval, `pcvl.BS()` represents a beam splitter and `pcvl.PS(phi=...)` represents a phase shifter.
@@ -93,3 +97,4 @@ The full output space can be very large. With many photons and modes, storing mi
 
 A Boson Sampling run does not usually produce one single “answer” to calculate. Its output is a collection of random photon patterns. The useful result is the empirical distribution and the statistics derived from it. To assess a simulator, compare those results with theory on a smaller test case, or check appropriate statistics and photon-number conservation.
 
+A runnable small-scale version of this workflow is `boson_sampling_basics.py`.
