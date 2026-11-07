@@ -1,0 +1,8 @@
+# Quandela's Perceval. Note: the PyPI package named "perceval" is an unrelated project
+# with the same import name; uninstall it if `import perceval.simulators` fails.
+perceval-quandela>=1.2
+numpy
+pandas
+scikit-learn>=1.2
+matplotlib
+jupyter
